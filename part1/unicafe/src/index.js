@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import ReactDOM from 'react-dom'
+//import ReactDOM from 'react-dom';
+import * as ReactDOMClient from 'react-dom/client';
 
-const Header = ({ text }) => (<header><h1>{text}</h1></header>)
+const Header = ({ text }) => (<><h1>{text}</h1></>)
 
 const Button = ({ handleClick, text }) => {
   return (
@@ -14,28 +15,32 @@ const Button = ({ handleClick, text }) => {
 const Statistic = ({ text, value }) => {
   return (
     <>
-      <p>{text} {value}</p>
+      <tr>
+        <th>{text}</th>
+        <td>{value}</td>
+      </tr>
     </>
   )
 }
 
 const Statistics = ({ good, neutral, bad }) => {
   const all = good + neutral + bad
-  const positive = good/all
-  const average = (good - bad)/all
 
   if (all === 0)
     return (<><p>No feedback given</p></>)
 
+  const average = ((good - bad)/all).toFixed(1)
+  const positive = (good/all).toFixed(3)
+
   return (
-    <div>
+    <table>
       <Statistic text="Good" value={good} />
       <Statistic text="Neutral" value={neutral} />
       <Statistic text="Bad" value={bad} />
       <Statistic text="All" value={all} />
       <Statistic text="Average" value={average} />
       <Statistic text="Positive" value={`${positive * 100}%`} />
-    </div>
+    </table>
   )
 }
 
@@ -71,6 +76,6 @@ const App = () => {
   )
 }
 
-ReactDOM.render(<App />,
-  document.getElementById('root')
-)
+const root = ReactDOMClient.createRoot(document.getElementById('root'))
+
+root.render(<App />)
