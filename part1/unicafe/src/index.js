@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const Header = ({text}) => (<header><h1>{text}</h1></header>)
+const Header = ({ text }) => (<header><h1>{text}</h1></header>)
 
 const Button = ({ handleClick, text }) => {
   return (
@@ -11,12 +11,27 @@ const Button = ({ handleClick, text }) => {
   )
 }
 
+const Statistics = ({ good, neutral, bad }) => {
+  const all = good + neutral + bad
+  const positive = good/all || 0
+  const average = (good - bad)/all || 0
+
+  return (
+    <>
+      <p>Good {good}</p>
+      <p>Neutral {neutral}</p>
+      <p>Bad {bad}</p>
+      <p>All {all}</p>
+      <p>Average {positive}</p>
+      <p>Positive {average}%</p>
+    </>
+  )
+}
+
 const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
-
-  const all = good + neutral + bad
 
   const incrementComment = (commentType) => () => {
     if (commentType === "good") {
@@ -29,33 +44,22 @@ const App = () => {
       setBad(bad + 1)
     }
   }
-  
-  const getPositive = () => (good / all)
-
-  const getAverage = () => (good - bad) / all
 
   return (
     <>
-      <Header text="Give feedback"/>
+      <Header text="Give feedback" />
 
-      <Button handleClick={incrementComment("good")} text="good"/>
-      <Button handleClick={incrementComment("neutral")} text="neutral"/>
-      <Button handleClick={incrementComment("bad")} text="bad"/>
+      <Button handleClick={incrementComment("good")} text="good" />
+      <Button handleClick={incrementComment("neutral")} text="neutral" />
+      <Button handleClick={incrementComment("bad")} text="bad" />
 
-      <Header text="Statistics"/>
+      <Header text="Statistics" />
 
-      <p>Good {good}</p>
-      <p>Neutral {neutral}</p>
-      <p>Bad {bad}</p>
-      <p>All {all}</p>
-      <p>Average {getAverage() || 0}</p>
-      <p>Positive {getPositive() * 100 || 0}%</p>
-
-      <p></p>
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </>
   )
 }
 
-ReactDOM.render(<App />, 
+ReactDOM.render(<App />,
   document.getElementById('root')
 )
