@@ -16,21 +16,23 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
+  const all = good + neutral + bad
+
   const incrementComment = (commentType) => () => {
-    switch (commentType) {
-      case "good":
-        setGood(good + 1)
-        break
-      case "neutral":
-        setNeutral(neutral + 1)
-        break
-      case "bad":
-        setBad(bad + 1)
-        break
-      default: 
-        break
+    if (commentType === "good") {
+      setGood(good + 1)
+    }
+    else if (commentType === "neutral") {
+      setNeutral(neutral + 1)
+    }
+    else if (commentType === "bad") {
+      setBad(bad + 1)
     }
   }
+  
+  const getPositive = () => (good / all)
+
+  const getAverage = () => (good - bad) / all
 
   return (
     <>
@@ -45,6 +47,11 @@ const App = () => {
       <p>Good {good}</p>
       <p>Neutral {neutral}</p>
       <p>Bad {bad}</p>
+      <p>All {all}</p>
+      <p>Average {getAverage() || 0}</p>
+      <p>Positive {getPositive() * 100 || 0}%</p>
+
+      <p></p>
     </>
   )
 }
